@@ -20,6 +20,9 @@ class UserAsk(models.Model):
         verbose_name = "用户咨询"
         verbose_name_plural = verbose_name
 
+    def __unicode__(self):
+        return self.name
+
 class CourseComments(models.Model):
     user = models.ForeignKey(UserProfile, default="用户")
     course = models.ForeignKey(Course, verbose_name="课程")
@@ -29,6 +32,9 @@ class CourseComments(models.Model):
     class Meta:
         verbose_name = "课程评论"
         verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return self.comments
 
 
 class UserCollect(models.Model):
