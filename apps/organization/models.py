@@ -22,12 +22,19 @@ class CityDict(models.Model):
 
 
 class CourseOrg(models.Model):
+    categorys = (
+        ("pxjg","培训机构"),
+        ("gr","个人"),
+        ("gx","高校")
+    )
+
     name = models.CharField(max_length=50, verbose_name="机构名称")
     desc = models.TextField(verbose_name="机构描述")
     click_num = models.IntegerField(default=0, verbose_name="点击数")
     collect_num = models.IntegerField(default=0,verbose_name="收藏人数")
-    image = models.ImageField(upload_to="org/%Y/m",verbose_name="缩略图",max_length=100)
+    image = models.ImageField(upload_to="org/%Y/%m",verbose_name="Logo",max_length=100)
     address = models.CharField(max_length=100, default="",verbose_name="机构地址")
+    category = models.CharField(default="pxjg",choices=categorys,max_length=20,verbose_name="机构类别")
     city = models.ForeignKey(CityDict,verbose_name="所在城市")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 

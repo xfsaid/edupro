@@ -142,6 +142,9 @@ STATICFILES_DIRS = (
 )
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+
 
 EMAIL_HOST = "smtp.163.com"
 EMAIL_PORT = 25
