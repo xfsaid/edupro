@@ -32,6 +32,8 @@ class CourseOrg(models.Model):
     desc = models.TextField(verbose_name="机构描述")
     click_num = models.IntegerField(default=0, verbose_name="点击数")
     collect_num = models.IntegerField(default=0,verbose_name="收藏人数")
+    student_num = models.IntegerField(default=0,verbose_name="学习人数")
+    course_num = models.IntegerField(default=0,verbose_name="课程数")
     image = models.ImageField(upload_to="org/%Y/%m",verbose_name="Logo",max_length=100)
     address = models.CharField(max_length=100, default="",verbose_name="机构地址")
     category = models.CharField(default="pxjg",choices=categorys,max_length=20,verbose_name="机构类别")
