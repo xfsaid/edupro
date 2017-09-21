@@ -74,73 +74,103 @@ class AddUserAskView(View):
 
 class OrgHomeView(View):
     def get(self,request, org_id):
+        has_collect = False
         current_page = "home"
+
         course_org = CourseOrg.objects.get(id=int(org_id))
         all_courses = course_org.course_set.all()[:3]
         all_teachers = course_org.teacher_set.all()[:1]
+
+        if request.user.is_authenticated():
+            if UserCollect.objects.filter(user=request.user,collect_id=course_org.id, collect_type=2):
+                has_collect = True
+
         return render(request,'org-detail-homepage.html',{
             "all_courses":all_courses,
             "all_teachers":all_teachers,
             "course_org":course_org,
             "current_page":current_page,
+            "has_collect":has_collect,
         })
 
 
 class OrgCourseView(View):
     def get(self,request, org_id):
+        has_collect = False
         current_page = "course"
+
         course_org = CourseOrg.objects.get(id=int(org_id))
         all_courses = course_org.course_set.all()
+
+        if request.user.is_authenticated():
+            if UserCollect.objects.filter(user=request.user,collect_id=course_org.id, collect_type=2):
+                has_collect = True
 
         return render(request,'org-detail-course.html',{
             "all_courses":all_courses,
             "course_org":course_org,
             "current_page":current_page,
+            "has_collect":has_collect,
         })
 
 
 class OrgDescView(View):
     def get(self,request, org_id):
+        has_collect = False
         current_page = "desc"
+
         course_org = CourseOrg.objects.get(id=int(org_id))
-        all_courses = course_org.course_set.all()
+        #all_courses = course_org.course_set.all()
+
+        if request.user.is_authenticated():
+            if UserCollect.objects.filter(user=request.user,collect_id=course_org.id, collect_type=2):
+                has_collect = True
 
         return render(request,'org-detail-desc.html',{
             "course_org":course_org,
             "current_page":current_page,
+            "has_collect":has_collect,
         })
 
 
 class OrgTeacherView(View):
     def get(self,request, org_id):
+        has_collect = False
         current_page = "teacher"
+
         course_org = CourseOrg.objects.get(id=int(org_id))
         all_teachers = course_org.teacher_set.all()
+
+        if request.user.is_authenticated():
+            if UserCollect.objects.filter(user=request.user,collect_id=course_org.id, collect_type=2):
+                has_collect = True
 
         return render(request,'org-detail-teachers.html',{
             "all_teachers":all_teachers,
             "course_org":course_org,
             "current_page":current_page,
+            "has_collect":has_collect,
         })
 
 
 class AddCollectView(View):
     def post(self,request):
-        collect_id = request.POST("collect_id",0)
-        collect_type = request.POST("collect_type",0)
+        collect_id = request.POST.get("collect_id",0)
+        collect_type = request.POST.get("collect_type",0)
         collect_id = int(collect_id)
         collect_type = int(collect_type)
 
         if not request.user.is_authenticated():
             return HttpResponse('{"status":"fail","msg":"用户未登录"}',content_type='application/json')
 
-        exist_records = UserCollect.objects.filter(user=request,collect_id=collect_id, collect_type=collect_type)
+        exist_records = UserCollect.objects.filter(user=request.user,collect_id=collect_id, collect_type=collect_type)
         if exist_records:
             exist_records.delete()
-            return HttpResponse('{"status":"fail","msg":"收藏"}',content_type='application/json')
+            return HttpResponse('{"status":"success","msg":"收藏"}',content_type='application/json')
         else:
             user_collect = UserCollect()
             if collect_id > 0 and collect_type > 0:
+                user_collect.user = request.user
                 user_collect.collect_id = collect_id
                 user_collect.collect_type = collect_type
                 user_collect.save()

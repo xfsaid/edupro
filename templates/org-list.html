@@ -53,56 +53,56 @@
 
                         {% for org in all_orgs.object_list %}
                             <dl class="des difdes">
-                            <dt>
-                                <a href="{% url 'org:org_home' org.id %}">
-                                    <img width="200" height="120" class="scrollLoading" data-url="{{ MEDIA_URL }}{{ org.image }}"/>
-                                </a>
-                            </dt>
-                            <dd>
-                                <div class="clearfix">
-                                    <a href="org-detail-homepage.html">
-                                        <h1>慕课网</h1>
-                                        <div class="pic fl">
-                                            <img src="/static/images/authentication.png"/>
-                                            <img src="/static/images/gold.png"/>
-                                        </div>
+                                <dt>
+                                    <a href="{% url 'org:org_home' org.id %}">
+                                        <img width="200" height="120" class="scrollLoading" data-url="{{ MEDIA_URL }}{{ org.image }}"/>
                                     </a>
-                                </div>
-                                <ul class="cont">
-                                    <li class="first"><p class="pic9">课程数：<span>1</span></p><p class="c7">学习人数：<span>1000</span></p></li>
-                                    <li class="c8" style="padding-left:18px;">北京市海淀区中关村北大街</li>
-                                    <li class="pic10" style="padding-left:18px;">经典课程：
-                                        <a href="/diary/19/">c语言基础入门</a>
-                                        <a href="/diary/16/">数据库基础</a>
-                                    </li>
-                                </ul>
-                            </dd>
-                            <div class="buy start_groupbuy jsShowPerfect2" data-id="22"><br/>联系<br/>服务</div>
-                        </dl>
+                                </dt>
+                                <dd>
+                                    <div class="clearfix">
+                                        <a href="org-detail-homepage.html">
+                                            <h1>慕课网</h1>
+                                            <div class="pic fl">
+                                                <img src="/static/images/authentication.png"/>
+                                                <img src="/static/images/gold.png"/>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <ul class="cont">
+                                        <li class="first"><p class="pic9">课程数：<span>1</span></p><p class="c7">学习人数：<span>1000</span></p></li>
+                                        <li class="c8" style="padding-left:18px;">北京市海淀区中关村北大街</li>
+                                        <li class="pic10" style="padding-left:18px;">经典课程：
+                                            <a href="/diary/19/">c语言基础入门</a>
+                                            <a href="/diary/16/">数据库基础</a>
+                                        </li>
+                                    </ul>
+                                </dd>
+                                <div class="buy start_groupbuy jsShowPerfect2" data-id="22"><br/>联系<br/>服务</div>
+                            </dl>
                         {% endfor %}
                     </div>
 
                     <div class="pageturn">
                         <ul class="pagelist">
-                                {% if all_orgs.has_previous %}
-                                    <li class="long"><a href="?{{ all_orgs.previous_page_number.querystring }}">前一页</a></li>
-                                {% endif %}
+                            {% if all_orgs.has_previous %}
+                                <li class="long"><a href="?{{ all_orgs.previous_page_number.querystring }}">前一页</a></li>
+                            {% endif %}
 
-                                {% for page in all_orgs.pages %}
-                                    {% if page %}
-                                        {% ifequal page all_orgs.number %}
-                                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                                        {% else %}
-                                            <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                                        {% endifequal %}
+                            {% for page in all_orgs.pages %}
+                                {% if page %}
+                                    {% ifequal page all_orgs.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
                                     {% else %}
-                                        <li class="none"><a href="">...</a></li>
-                                    {% endif %}
-                                {% endfor %}
-
-                                {% if all_orgs.has_next %}
-                                    <li class="long"><a href="?{{ all_orgs.next_page_number.querystring }}">下一页</a></li>
+                                        <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
                                 {% endif %}
+                            {% endfor %}
+
+                            {% if all_orgs.has_next %}
+                                <li class="long"><a href="?{{ all_orgs.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
                         </ul>
                     </div>
 
@@ -134,12 +134,12 @@
                 <div class="head">授课机构排名</div>
                 {% for hot_org in hot_orgs %}
                     <dl class="des">
-                    <dt class="num fl">{{ forloop.counter }}</dt>
-                    <dd>
-                        <a href="/company/2/"><h1>{{ hot_org.name }}</h1></a>
-                        <p>{{ hot_org.address }}</p>
-                    </dd>
-                </dl>
+                        <dt class="num fl">{{ forloop.counter }}</dt>
+                        <dd>
+                            <a href="/company/2/"><h1>{{ hot_org.name }}</h1></a>
+                            <p>{{ hot_org.address }}</p>
+                        </dd>
+                    </dl>
                 {% endfor %}
             </div>
         </div>
@@ -148,24 +148,24 @@
 
 {% block custom_scp %}
     <script>
-    $(function(){
-        $('#jsStayBtn').on('click', function(){
-            $.ajax({
-                cache: false,
-                type: "POST",
-                url:"{% url 'org:add_ask' %}",
-                data:$('#jsStayForm').serialize(),
-                async: true,
-                success: function(data) {
-                    if(data.status == 'success'){
-                        $('#jsStayForm')[0].reset();
-                        alert("提交成功")
-                    }else if(data.status == 'fail'){
-                        $('#jsCompanyTips').html(data.msg)
-                    }
-                },
+        $(function(){
+            $('#jsStayBtn').on('click', function(){
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url:"{% url 'org:add_ask' %}",
+                    data:$('#jsStayForm').serialize(),
+                    async: true,
+                    success: function(data) {
+                        if(data.status == 'success'){
+                            $('#jsStayForm')[0].reset();
+                            alert("提交成功")
+                        }else if(data.status == 'fail'){
+                            $('#jsCompanyTips').html(data.msg)
+                        }
+                    },
+                });
             });
-        });
-    })
+        })
     </script>
 {% endblock %}
