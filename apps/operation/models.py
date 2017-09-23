@@ -24,7 +24,7 @@ class UserAsk(models.Model):
         return self.name
 
 class CourseComments(models.Model):
-    user = models.ForeignKey(UserProfile, default="用户")
+    user = models.ForeignKey(UserProfile, verbose_name="用户")
     course = models.ForeignKey(Course, verbose_name="课程")
     comments = models.CharField(max_length=200, verbose_name="评论")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
@@ -41,7 +41,7 @@ class UserCollect(models.Model):
     #course = models.ForeignKey(Course, verbose_name="课程")
     #teacher = models.ForeignKey(***, verbose_name="讲师")
     #org = models.ForeignKey(***, verbose_name="机构")
-    user = models.ForeignKey(UserProfile, default="用户")
+    user = models.ForeignKey(UserProfile, verbose_name="用户")
     collect_id = models.IntegerField(default=0, verbose_name="ID")
     collect_type = models.IntegerField(choices=((1,"课程"),(2,"机构"),(3,"讲师")),default=1,verbose_name="收藏类型")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
@@ -63,7 +63,7 @@ class UserMessage(models.Model):
 
 
 class UserCourse(models.Model):
-    user = models.ForeignKey(UserProfile, default="用户")
+    user = models.ForeignKey(UserProfile, verbose_name="用户")
     course = models.ForeignKey(Course, verbose_name="课程")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="学习时间")
 
