@@ -61,3 +61,12 @@ class CourseDetailView(View):
             "has_cl_course":has_cl_course,
             "has_cl_org":has_cl_org,
         })
+
+
+class CourseInfoView(View):
+    def get(self,request,course_id):
+        current_course = Course.objects.get(id=int(course_id))
+        return render(request,"course-video.html",{
+            "current_course":current_course,
+        })
+
