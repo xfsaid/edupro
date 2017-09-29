@@ -4,7 +4,7 @@ __date__ = '2017/9/23 10:52'
 
 
 from django.conf.urls import url,include
-from .views import CourseListView,CourseDetailView,CourseInfoView,CommentsView,AddCommentView
+from .views import CourseListView,CourseDetailView,CourseInfoView,CommentsView,AddCommentView,VideoPlayView
 
 
 urlpatterns = [
@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^info/(?P<course_id>\d+)/$', CourseInfoView.as_view(), name="course_info"),
     url(r'^comments/(?P<course_id>\d+)/$', CommentsView.as_view(), name="course_comments"),
     url(r'^add_comment/$', AddCommentView.as_view(), name="add_comment"),
+    url(r'^video/(?P<video_id>\d+)/$', VideoPlayView.as_view(), name="video_play"),
 ]

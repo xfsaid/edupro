@@ -4,7 +4,7 @@ from django.views.generic.base import View
 from django.http import HttpResponse
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Course
+from .models import Course,Video
 from operation.models import UserCollect,CourseComments,UserCourse
 from utils.mixin_utils import LoginRequiredMixin
 
@@ -112,3 +112,18 @@ class AddCommentView(View):
         else:
             return HttpResponse('{"status":"fail","msg":"评论失败"}',content_type='application/json')
 
+
+class VideoPlayView(View):
+    def get(self,request,video_id):
+        video =Video.objects.get(id=video_id)
+        current_course = video.lesson.course
+
+        user_courses = UserCourse.objects.filter(user=request.user, course=current_course)
+        if not user_courses:
+            user_courses = UserCourse(user=request.user, course=current_course)
+            user_courses.save()
+
+        return render(request,"course-play.html",{
+            "current_course":current_course,
+            "video":video,
+        })
