@@ -5,7 +5,8 @@ from django.http import HttpResponse
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import Course
-from operation.models import UserCollect,CourseComments
+from operation.models import UserCollect,CourseComments,UserCourse
+from utils.mixin_utils import LoginRequiredMixin
 
 # Create your views here.
 
@@ -64,15 +65,26 @@ class CourseDetailView(View):
         })
 
 
-class CourseInfoView(View):
+#view要求登录权限的两种方法
+class CourseInfoView(LoginRequiredMixin, View):#方法2
     def get(self,request,course_id):
+        #方法1：
+        # if not request.user.is_authenticated():
+        #     return render(request,"login.html",{})
+
         current_course = Course.objects.get(id=int(course_id))
+
+        user_courses = UserCourse.objects.filter(user=request.user, course=current_course)
+        if not user_courses:
+            user_courses = UserCourse(user=request.user, course=current_course)
+            user_courses.save()
+
         return render(request,"course-video.html",{
             "current_course":current_course,
         })
 
 
-class CommentsView(View):
+class CommentsView(LoginRequiredMixin, View):
     def get(self,request,course_id):
         current_course = Course.objects.get(id=int(course_id))
         all_comments = current_course.get_course_comments()#可以再html中获取
