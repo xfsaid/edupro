@@ -201,3 +201,27 @@ class TeacherListView(View):
             "sorted_teachers":sorted_teachers,
             "sort":sort,
         })
+
+
+class TeacherDetailView(View):
+    def get(self,request, teacher_id):
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        all_courses = Course.objects.filter(teacher=teacher)
+        sorted_teachers = Teacher.objects.all().order_by("-click_num")[:3]
+
+        has_teacher_coll = False
+        has_org_coll = False
+
+        if UserCollect.objects.filter(user=request.user, collect_id=teacher.id,collect_type=3):
+            has_teacher_coll = True
+
+        if UserCollect.objects.filter(user=request.user, collect_id=teacher.org.id,collect_type=2):
+            has_org_coll = True
+
+        return render(request, "teacher-detail.html", {
+            "teacher":teacher,
+            "all_courses":all_courses,
+            "sorted_teachers":sorted_teachers,
+            "has_teacher_coll":has_teacher_coll,
+            "has_org_coll":has_org_coll,
+        })
