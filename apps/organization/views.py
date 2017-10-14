@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
+from django.db.models import Q
 
 #https://github.com/jamespacileo/django-pure-pagination
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
@@ -27,6 +28,11 @@ class OrgView(View):
 
         if city_id:
             all_orgs = all_orgs.filter(city_id=city_id)
+
+        #搜索功能
+        search_keywords = request.GET.get('keywords','')
+        if search_keywords:
+            all_orgs = all_orgs.filter(Q(name__icontains=search_keywords)|Q(desc__icontains=search_keywords))
 
         category = request.GET.get("ct","")
         if category:
@@ -182,6 +188,11 @@ class AddCollectView(View):
 class TeacherListView(View):
     def get(self,request):
         all_teachers = Teacher.objects.all()
+
+        #搜索功能
+        search_keywords = request.GET.get('keywords','')
+        if search_keywords:
+            all_teachers = all_teachers.filter(name__icontains=search_keywords)
 
         sort = request.GET.get("sort","")
         if sort:
