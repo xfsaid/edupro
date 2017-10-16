@@ -23,6 +23,11 @@ class UserProfile(AbstractUser):
     def __unicode__(self):
         return  self.username
 
+    def get_unread_message_num(self):
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(user_id=self.id).count()
+
+
 class EmailVerifyRecord(models.Model):
     #TODO： sqlite中 max_length无效
     code = models.CharField(max_length=20, verbose_name="验证码")

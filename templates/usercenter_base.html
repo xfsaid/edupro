@@ -45,6 +45,9 @@
                                 </div>
                             </div>
                         </div>
+                        <a href="{% url 'users:mymessage' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ request.user.get_unread_message_num }}</span></div>
+                        </a>
                     </div>
                 </div>
             {% else %}
@@ -92,7 +95,7 @@
                 <li ><a href="{% url 'users:mycourse' %}">我的课程</a></li>
                 <li ><a href="{% url 'users:mycollect_org' %}">我的收藏</a></li>
                 <li >
-                    <a href="usercenter-message.html" style="position: relative;">
+                    <a href="{% url 'users:mymessage' %}" style="position: relative;">
                         我的消息
                     </a>
                 </li>

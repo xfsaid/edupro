@@ -1,5 +1,6 @@
 #_*_ encoding:utf-8 _*_
 import json
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
@@ -14,7 +15,7 @@ from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm
 from .forms import UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
-from operation.models import UserCourse,UserCollect
+from operation.models import UserCourse,UserCollect,UserMessage
 from organization.models import CourseOrg, Teacher
 from courses.models import Course
 
@@ -85,6 +86,12 @@ class RegisterView(View):
             user_profile.email = user_name
             user_profile.password = make_password(pass_word)
             user_profile.save()
+
+            #welcome
+            user_message = UserMessage()
+            user_message.user_id = user_profile.id
+            user_message.message = "欢迎注册EDU在线"
+            user_message.save()
 
             send_register_email(user_name, "register")
             return render(request, "login.html")
@@ -275,4 +282,20 @@ class MyCollectCourseView(LoginRequiredMixin, View):
 
         return render(request, 'usercenter-fav-course.html', {
             "course_list":course_list,
+        })
+
+
+class MyMessageView(LoginRequiredMixin, View):
+    def get(self, request):
+        all_messages = UserMessage.objects.filter(user_id=request.user.id)
+
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(all_messages, 1, request=request)#每页显示条数
+        page_messages = p.page(page)
+
+        return render(request, 'usercenter-message.html',{
+            "all_messages":page_messages,
         })
