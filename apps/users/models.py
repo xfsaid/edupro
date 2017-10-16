@@ -25,7 +25,7 @@ class UserProfile(AbstractUser):
 
     def get_unread_message_num(self):
         from operation.models import UserMessage
-        return UserMessage.objects.filter(user_id=self.id).count()
+        return UserMessage.objects.filter(user_id=self.id, has_read=False).count()
 
 
 class EmailVerifyRecord(models.Model):

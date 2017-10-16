@@ -2,12 +2,12 @@
 import json
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from django.views.generic.base import View
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponsePermanentRedirect
 
 
 from .models import UserProfile,EmailVerifyRecord
@@ -43,6 +43,13 @@ def login_view(request):
             return render(request, "login.html",{"msg":"用户名或者密码错误！"})
     elif request.method == "GET":
         return render(request, "login.html", {})
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        from django.core.urlresolvers import reverse
+        return HttpResponsePermanentRedirect(reverse("index"))
 
 
 class LoginView(View):
@@ -287,8 +294,12 @@ class MyCollectCourseView(LoginRequiredMixin, View):
 
 class MyMessageView(LoginRequiredMixin, View):
     def get(self, request):
-        all_messages = UserMessage.objects.filter(user_id=request.user.id)
+        unread_msgs = UserMessage.objects.filter(user_id=request.user.id, has_read=False)
+        for unread_msg in unread_msgs:
+            unread_msg.has_read = True
+            unread_msg.save()
 
+        all_messages = UserMessage.objects.filter(user_id=request.user.id)
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:

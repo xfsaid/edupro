@@ -84,6 +84,9 @@ class OrgHomeView(View):
         current_page = "home"
 
         course_org = CourseOrg.objects.get(id=int(org_id))
+        course_org.click_num += 1
+        course_org.save()
+
         all_courses = course_org.course_set.all()[:3]
         all_teachers = course_org.teacher_set.all()[:1]
 
@@ -172,6 +175,21 @@ class AddCollectView(View):
         exist_records = UserCollect.objects.filter(user=request.user,collect_id=collect_id, collect_type=collect_type)
         if exist_records:
             exist_records.delete()
+
+            coll_obj = None
+            if collect_type == 1:#kecheng
+                coll_obj = Course.objects.get(id=collect_id)
+            elif collect_type == 2:#jigou
+                coll_obj = CourseOrg.objects.get(id=collect_id)
+            elif collect_type == 3:#jiangshi
+                coll_obj = Teacher.objects.get(id=collect_id)
+
+            if coll_obj:
+                coll_obj.collect_num -= 1
+                if coll_obj.collect_num < 0:
+                    coll_obj.collect_num = 0
+                coll_obj.save()
+
             return HttpResponse('{"status":"success","msg":"收藏"}',content_type='application/json')
         else:
             user_collect = UserCollect()
@@ -180,6 +198,19 @@ class AddCollectView(View):
                 user_collect.collect_id = collect_id
                 user_collect.collect_type = collect_type
                 user_collect.save()
+
+                coll_obj = None
+                if collect_type == 1:#kecheng
+                    coll_obj = Course.objects.get(id=collect_id)
+                elif collect_type == 2:#jigou
+                    coll_obj = CourseOrg.objects.get(id=collect_id)
+                elif collect_type == 3:#jiangshi
+                    coll_obj = Teacher.objects.get(id=collect_id)
+
+                if coll_obj:
+                    coll_obj.collect_num += 1
+                    coll_obj.save()
+
                 return HttpResponse('{"status":"success","msg":"已收藏"}',content_type='application/json')
             else:
                 return HttpResponse('{"status":"fail","msg":"收藏出错"}',content_type='application/json')
@@ -217,6 +248,9 @@ class TeacherListView(View):
 class TeacherDetailView(View):
     def get(self,request, teacher_id):
         teacher = Teacher.objects.get(id=int(teacher_id))
+        teacher.click_num += 1
+        teacher.save()
+
         all_courses = Course.objects.filter(teacher=teacher)
         sorted_teachers = Teacher.objects.all().order_by("-click_num")[:3]
 

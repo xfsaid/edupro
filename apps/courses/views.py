@@ -79,6 +79,8 @@ class CourseInfoView(LoginRequiredMixin, View):#方法2
         #     return render(request,"login.html",{})
 
         current_course = Course.objects.get(id=int(course_id))
+        current_course.student_num += 1
+        current_course.save()
 
         user_courses = UserCourse.objects.filter(user=request.user, course=current_course)
         if not user_courses:
