@@ -14,7 +14,9 @@ from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm
 from .forms import UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
-from operation.models import UserCourse
+from operation.models import UserCourse,UserCollect
+from organization.models import CourseOrg, Teacher
+from courses.models import Course
 
 
 #自定义user验证函数
@@ -231,4 +233,46 @@ class MyCourseView(LoginRequiredMixin, View):
         user_courses = UserCourse.objects.filter(user=request.user)
         return render(request, 'usercenter-mycourse.html',{
             "user_courses":user_courses,
+        })
+
+
+class MyCollectOrgView(LoginRequiredMixin, View):
+    def get(self, request):
+        org_list = []
+        collects = UserCollect.objects.filter(user=request.user, collect_type=2)
+        for collect in collects:
+            org = CourseOrg.objects.get(id=collect.collect_id)
+            if org:
+                org_list.append(org)
+
+        return render(request, 'usercenter-fav-org.html', {
+            "org_list":org_list,
+        })
+
+
+class MyCollectTeacherView(LoginRequiredMixin, View):
+    def get(self, request):
+        teacher_list = []
+        collects = UserCollect.objects.filter(user=request.user, collect_type=3)
+        for collect in collects:
+            teacher = Teacher.objects.get(id=collect.collect_id)
+            if teacher:
+                teacher_list.append(teacher)
+
+        return render(request, 'usercenter-fav-teacher.html', {
+            "teacher_list":teacher_list,
+        })
+
+
+class MyCollectCourseView(LoginRequiredMixin, View):
+    def get(self, request):
+        course_list = []
+        collects = UserCollect.objects.filter(user=request.user, collect_type=1)
+        for collect in collects:
+            course = Course.objects.get(id=collect.collect_id)
+            if course:
+                course_list.append(course)
+
+        return render(request, 'usercenter-fav-course.html', {
+            "course_list":course_list,
         })

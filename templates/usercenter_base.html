@@ -90,7 +90,7 @@
             <ul>
                 <li class="active2"><a href="{% url 'users:users_info' %}">个人资料</a></li>
                 <li ><a href="{% url 'users:mycourse' %}">我的课程</a></li>
-                <li ><a href="usercenter-fav-course.html">我的收藏</a></li>
+                <li ><a href="{% url 'users:mycollect_org' %}">我的收藏</a></li>
                 <li >
                     <a href="usercenter-message.html" style="position: relative;">
                         我的消息
@@ -261,16 +261,16 @@
 <script type="text/javascript">
     $('.jsDeleteFav_course').on('click', function(){
         var _this = $(this),
-            favid = _this.attr('data-favid');
-        alert(favid)
+            collect_id = _this.attr('data-favid');
+        alert(collect_id)
         $.ajax({
                 cache: false,
                 type: "POST",
-                url: "/org/add_fav/",
+                url: "{% url 'org:add_collect' %}",
                 data: {
-                    fav_type: 1,
-                    fav_id: favid,
-                    csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                    collect_type: 1,
+                    collect_id: collect_id,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 async: true,
                 success: function(data) {
@@ -281,15 +281,15 @@
 
     $('.jsDeleteFav_teacher').on('click', function(){
             var _this = $(this),
-                favid = _this.attr('data-favid');
+                collect_id = _this.attr('data-favid');
             $.ajax({
                     cache: false,
                     type: "POST",
-                    url: "/org/add_fav/",
+                    url: "{% url 'org:add_collect' %}",
                     data: {
-                        fav_type: 3,
-                        fav_id: favid,
-                        csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                        collect_type: 3,
+                        collect_id: collect_id,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     async: true,
                     success: function(data) {
@@ -298,18 +298,17 @@
                 });
         });
 
-
     $('.jsDeleteFav_org').on('click', function(){
             var _this = $(this),
-                favid = _this.attr('data-favid');
+                collect_id = _this.attr('data-favid');
             $.ajax({
                     cache: false,
                     type: "POST",
-                    url: "/org/add_fav/",
+                    url: "{% url 'org:add_collect' %}",
                     data: {
-                        fav_type: 2,
-                        fav_id: favid,
-                        csrfmiddlewaretoken: '799Y6iPeEDNSGvrTu3noBrO4MBLv6enY'
+                        collect_type: 2,
+                        collect_id: collect_id,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     async: true,
                     success: function(data) {

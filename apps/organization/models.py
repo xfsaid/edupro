@@ -71,4 +71,5 @@ class Teacher(models.Model):
     def __unicode__(self):
         return '[{0}] {1}'.format(self.org.name, self.name)
 
-
+    def get_course_num(self):
+        return self.course_set.count()

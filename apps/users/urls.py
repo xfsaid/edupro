@@ -2,12 +2,18 @@
 __author__ = 'said'
 __date__ = '2017/10/14 12:27'
 
+
 from django.conf.urls import url,include
 from .views import UserInofView,UserUploadImageView,UserUpdatePwdView,SendEmailCodeView,UpdateEmailView
-from .views import MyCourseView
+from .views import MyCourseView,MyCollectOrgView, MyCollectTeacherView, MyCollectCourseView
+
+
 urlpatterns = [
     url(r'^info/$', UserInofView.as_view(), name="users_info"),
     url(r'^mycourse/$', MyCourseView.as_view(), name="mycourse"),
+    url(r'^mycollect/org$', MyCollectOrgView.as_view(), name="mycollect_org"),
+    url(r'^mycollect/teacher$', MyCollectTeacherView.as_view(), name="mycollect_teacher"),
+    url(r'^mycollect/course$', MyCollectCourseView.as_view(), name="mycollect_course"),
 
 
     url(r'^image/upload/$', UserUploadImageView.as_view(), name="image_upload"),
