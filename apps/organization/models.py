@@ -30,6 +30,7 @@ class CourseOrg(models.Model):
 
     name = models.CharField(max_length=50, verbose_name="机构名称")
     desc = models.TextField(verbose_name="机构描述")
+    org_tag = models.CharField(max_length=10, verbose_name="机构标签",default="知名院校")
     click_num = models.IntegerField(default=0, verbose_name="点击数")
     collect_num = models.IntegerField(default=0,verbose_name="收藏人数")
     student_num = models.IntegerField(default=0,verbose_name="学习人数")

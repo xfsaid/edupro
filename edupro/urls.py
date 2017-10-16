@@ -1,3 +1,4 @@
+#_*_ encoding:utf-8 _*_
 """edupro URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -20,15 +21,22 @@ from django.views.static import serve
 import xadmin
 
 #from users.views import login_view
-from users.views import LoginView,RegisterView,ActiveUserView, ForgetPwdView,ResetView,ModifyPwdView,LogoutView
+from users.views import LoginView,RegisterView,ActiveUserView, ForgetPwdView,ResetView
+from users.views import IndexView, ModifyPwdView,LogoutView
 from organization.views import OrgView
 from edupro.settings import MEDIA_ROOT
+#release
+from edupro.settings import STATIC_ROOT
+
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^media/(?P<path>.*)$', serve, {"document_root":MEDIA_ROOT}),
 
-    url('^$',TemplateView.as_view(template_name="index.html"),name="index"),
+    #release 生产环境配置
+    url(r'^static/(?P<path>.*)$', serve, {"document_root":STATIC_ROOT}),
+
+    url('^$',IndexView.as_view(),name="index"),
     #url('^login/$',login_view, name="login"),
     url('^login/$',LoginView.as_view(), name="login"),
     url('^logout/$',LogoutView.as_view(), name="logout"),
@@ -47,3 +55,7 @@ urlpatterns = [
     url(r'^course/', include('courses.urls', namespace="course")),
     url(r'^users/', include('users.urls', namespace="users")),
 ]
+
+#全局4004页面配置
+handler404 = 'users.views.page_not_found'
+handler500 = 'users.views.page_error'
