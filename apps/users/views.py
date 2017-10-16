@@ -10,9 +10,11 @@ from django.http import HttpResponse
 
 
 from .models import UserProfile,EmailVerifyRecord
-from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm,UploadImageForm
+from .forms import LoginForm,RegisterForm,ForgetPwdForm,ModifyPwdForm
+from .forms import UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixin
+from operation.models import UserCourse
 
 
 #自定义user验证函数
@@ -151,6 +153,16 @@ class UserInofView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'usercenter-info.html',{})
 
+    def post(self, request):
+        #修改，需要指明要修改的实例,不指明实例，save会新增
+        userinfo_form = UserInfoForm(request.POST, instance=request.user)
+        if userinfo_form.is_valid():
+            userinfo_form.save()
+            return HttpResponse('{"status":"success"}',content_type='application/json')
+        else:
+            return HttpResponse(json.dumps(userinfo_form.errors),content_type='application/json')
+
+
 
 class UserUploadImageView(LoginRequiredMixin, View):
     #方法1 TODO 需要理解
@@ -189,3 +201,34 @@ class UserUpdatePwdView(View):
             return HttpResponse('{"status":"success"}',content_type='application/json')
         else:
             return HttpResponse(json.dumps(modify_form.errors),content_type='application/json')
+
+
+class SendEmailCodeView(LoginRequiredMixin, View):
+    def get(self, request):
+        email = request.GET.get('email','')
+        if UserProfile.objects.filter(email=email):
+            return HttpResponse('{"email":"邮箱已存在"}',content_type='application/json')
+        send_register_email(email,'update_email')
+        return HttpResponse('{"status":"success"}',content_type='application/json')
+
+
+class UpdateEmailView(View):
+    def post(self, request):
+        email = request.POST.get('email','')
+        code = request.POST.get('code','')
+
+        if EmailVerifyRecord.objects.filter(email=email, code=code, send_type='update_email'):
+            user = request.user
+            user.email = email
+            user.save()
+            return HttpResponse('{"status":"success"}',content_type='application/json')
+        else:
+            return HttpResponse('{"email":"验证码错误"}',content_type='application/json')
+
+
+class MyCourseView(LoginRequiredMixin, View):
+    def get(self, request):
+        user_courses = UserCourse.objects.filter(user=request.user)
+        return render(request, 'usercenter-mycourse.html',{
+            "user_courses":user_courses,
+        })
