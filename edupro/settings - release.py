@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.join(BASE_DIR,"extra_apps"))
 SECRET_KEY = 'acu!zg&0_(47k^puhhkhmebe&ne_6fq_1re4vfs+#3bxlni0*s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -147,8 +147,8 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
-#!!!release
-#STATIC_ROOT = os.path.join(BASE_DIR,"static")
+#release
+STATIC_ROOT = os.path.join(BASE_DIR,"static")
 
 
 EMAIL_HOST = "smtp.163.com"

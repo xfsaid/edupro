@@ -17,13 +17,13 @@ class CourseOrgAdmin(object):
     list_display = ['name','desc','click_num','collect_num','image','address','city','add_time']
     search_fields = ['name','desc','click_num','collect_num','image','address','city']
     list_filter = ['name','desc','click_num','collect_num','image','address','city','add_time']
+    #relfield_style = 'fk-ajax'
 
 
 class TeacherAdmin(object):
     list_display = ['org','name','work_years','work_company','work_position','points','click_num','collect_num','add_time']
     search_fields = ['org','name','work_years','work_company','work_position','points','click_num','collect_num']
     list_filter = ['org__name','name','work_years','work_company','work_position','points','click_num','collect_num','add_time']
-
 
 
 
