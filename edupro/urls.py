@@ -31,6 +31,7 @@ from edupro.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
+    url(r'^ueditor/',include('DjangoUeditor.urls')),
     url(r'^media/(?P<path>.*)$', serve, {"document_root":MEDIA_ROOT}),
 
     #release 生产环境配置

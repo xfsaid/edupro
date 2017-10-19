@@ -27,6 +27,7 @@ class CourseAdmin(object):
     inlines = [LessonInLine, CourseResourceInLine]#添加课程界面，可以复数添加章节，但是不能同时添加章节的视频信息了
     list_editable = ['degree','desc']#字段可直接修改
     refresh_times = [3,6]#定时刷新选项
+    style_fields = {"detail":"ueditor"}#xadmin/plugins/ueditor.py中,style == 'ueditor'
 
     def queryset(self):#自定义过滤逻辑
         qs = super(CourseAdmin, self).queryset()
