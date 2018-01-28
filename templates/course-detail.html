@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}公开课列表 - EDU在线{% endblock %}
+{% block title %}课程列表 - EDU在线{% endblock %}
 
 {% block custom_bread %}
     <section>
         <div class="wp">
             <ul  class="crumbs">
                 <li><a href="{% url 'index' %}">首页</a>></li>
-                <li><a href="{% url 'course:course_list' %}">公开课</a>></li>
+                <li><a href="{% url 'course:course_list' %}">课程列表</a>></li>
                 <li>课程详情</li>
             </ul>
         </div>
@@ -54,7 +54,7 @@
                     <div class="group-share-box">
                         <div class="bdsharebuttonbox"
                              data-text="django开始了"
-                             data-desc="我在#慕课网#发现了"
+                             data-desc="我在#EDU在线网#发现了"
                              data-comment=""
                              data-url="/group/groupdetail/15/">
                             <span class="fl">分享到：</span>

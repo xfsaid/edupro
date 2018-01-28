@@ -66,10 +66,10 @@
                     <div class="searchbox fr">
                         <div class="selectContainer fl">
                             <span class="selectOption" id="jsSelectOption" data-value="course">
-                                公开课
+                                课程名
                             </span>
                             <ul class="selectMenu" id="jsSelectMenu">
-                                <li data-value="course">公开课</li>
+                                <li data-value="course">课程名</li>
                                 <li data-value="org">课程机构</li>
                                 <li data-value="teacher">授课老师</li>
                             </ul>
@@ -91,7 +91,7 @@
 
                             <li {% ifequal request.path|slice:'7' '/course' %}class="active"{% endifequal %}>
                                 <a href="{% url 'course:course_list' %}">
-                                    公开课<img class="hot" src="/static/images/nav_hot.png">
+                                    课程列表<img class="hot" src="/static/images/nav_hot.png">
                                 </a>
                             </li>
 
@@ -129,7 +129,7 @@
         </div>
         <p class="line"></p>
         <div class="wp clear">
-            <span class="fl">? 2016 www.projectsedu.com 慕学在线-在线学习交流平台 保留所有权利</span>
+            <span class="fl">? 2016 www.projectsedu.com EDU在线-在线学习交流平台 保留所有权利</span>
             <span class="fr">copyright ? 2016 ICP备案证书号：蜀ICP备xxxxx号-1</span>
         </div>
     </div>
@@ -138,7 +138,7 @@
 <section>
     <ul class="sidebar">
         <li class="qq">
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2023525077&site=qq&menu=yes"></a>
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1639946474&site=qq&menu=yes"></a>
         </li>
         <li class="totop"></li>
     </ul>

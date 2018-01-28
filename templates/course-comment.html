@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}公开课评论 - EDU在线{% endblock %}
+{% block title %}课程评论 - EDU在线{% endblock %}
 
 {% block custom_css %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/muke/base.css' %}" />
@@ -17,7 +17,7 @@
         <div class="wp">
             <ul  class="crumbs">
                 <li><a href="{% url 'index' %}">首页</a>></li>
-                <li><a href="{% url 'course:course_list' %}">公开课</a>></li>
+                <li><a href="{% url 'course:course_list' %}">课程列表</a>></li>
                 <li><a href="{% url 'course:course_detail' current_course.id %}">课程详情</a>></li>
                 <li>评论信息</li>
             </ul>
