@@ -88,7 +88,7 @@ class OrgHomeView(View):
         course_org.save()
 
         all_courses = course_org.course_set.all()[:3]
-        all_teachers = course_org.teacher_set.all()[:1]
+        all_teachers = course_org.teacher_set.all()[:2]
 
         if request.user.is_authenticated():
             if UserCollect.objects.filter(user=request.user,collect_id=course_org.id, collect_type=2):

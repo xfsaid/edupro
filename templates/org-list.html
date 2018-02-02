@@ -68,6 +68,8 @@
                                             </div>
                                         </a>
                                     </div>
+
+{#                                    TODO#}
                                     <ul class="cont">
                                         <li class="first"><p class="pic9">课程数：<span>1</span></p><p class="c7">学习人数：<span>1000</span></p></li>
                                         <li class="c8" style="padding-left:18px;">北京市海淀区中关村北大街</li>
@@ -136,7 +138,7 @@
                     <dl class="des">
                         <dt class="num fl">{{ forloop.counter }}</dt>
                         <dd>
-                            <a href="/company/2/"><h1>{{ hot_org.name }}</h1></a>
+                            <a href="{% url 'org:org_home' hot_org.id %}"><h1>{{ hot_org.name }}</h1></a>
                             <p>{{ hot_org.address }}</p>
                         </dd>
                     </dl>
